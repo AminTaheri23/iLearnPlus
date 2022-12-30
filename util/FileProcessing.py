@@ -171,7 +171,7 @@ class Descriptor(Sequence):
                     code.append(count[aa])
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -211,7 +211,7 @@ class Descriptor(Sequence):
                             code.append(count[aa])
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -261,7 +261,7 @@ class Descriptor(Sequence):
                         code.append(myDict[pair] / sum)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -428,7 +428,7 @@ class Descriptor(Sequence):
                         for key in sorted(tmp_dict):
                             code.append(tmp_dict[key]/(len(sequence) -d))
                 encodings.append(code)
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -467,7 +467,7 @@ class Descriptor(Sequence):
                 code = code + tmpCode
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -522,7 +522,7 @@ class Descriptor(Sequence):
                 code = code + tmpCode
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -569,7 +569,7 @@ class Descriptor(Sequence):
                 code = code + tmpCode
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -609,7 +609,7 @@ class Descriptor(Sequence):
                         code.append(tag)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -655,7 +655,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -701,7 +701,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -761,7 +761,7 @@ class Descriptor(Sequence):
                         code += [0, 0, 0, 0, 0]
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -805,7 +805,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -849,7 +849,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -893,7 +893,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -938,7 +938,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -982,7 +982,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1026,7 +1026,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1070,7 +1070,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1127,7 +1127,7 @@ class Descriptor(Sequence):
                     code += AESNN3_dict.get(aa, [0, 0, 0])
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1173,7 +1173,7 @@ class Descriptor(Sequence):
                     code.append(myDict[key] / len(sequence))
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1225,7 +1225,7 @@ class Descriptor(Sequence):
                             code.append(myDict[key] / window)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1301,7 +1301,7 @@ class Descriptor(Sequence):
                             code.append(gPair[gp] / sum)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1361,7 +1361,7 @@ class Descriptor(Sequence):
                         code.append(myDict[t] / sum)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1428,7 +1428,7 @@ class Descriptor(Sequence):
                         code.append(myDict[t] / sum)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1495,7 +1495,7 @@ class Descriptor(Sequence):
                         code.append(j[index[aa]])
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1552,7 +1552,7 @@ class Descriptor(Sequence):
                     code = code + zscale[aa]
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1608,7 +1608,7 @@ class Descriptor(Sequence):
                     code = code + blosum62[aa]
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1683,7 +1683,7 @@ class Descriptor(Sequence):
                         code.append(rn)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1764,7 +1764,7 @@ class Descriptor(Sequence):
                         code.append(rn)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1844,7 +1844,7 @@ class Descriptor(Sequence):
                         code.append(rn)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1908,7 +1908,7 @@ class Descriptor(Sequence):
                         code.append(ac)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -1980,7 +1980,7 @@ class Descriptor(Sequence):
                         code.append(cc)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2066,7 +2066,7 @@ class Descriptor(Sequence):
                         code.append(cc)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2156,7 +2156,7 @@ class Descriptor(Sequence):
                 encodings.append(code)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2252,7 +2252,7 @@ class Descriptor(Sequence):
                 encodings.append(code)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2357,7 +2357,7 @@ class Descriptor(Sequence):
                 encodings.append(code)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2424,7 +2424,7 @@ class Descriptor(Sequence):
                 code = code + self.CalculateKSCTriad(sequence, 0, features, AADict)
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2479,7 +2479,7 @@ class Descriptor(Sequence):
                 code = code + self.CalculateKSCTriad(sequence, gap, features, AADict)
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2551,7 +2551,7 @@ class Descriptor(Sequence):
                                     range(len(sequence) - n)]) / (len(sequence) - n))
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2646,7 +2646,7 @@ class Descriptor(Sequence):
                     code.append((w * num) / (1 + w * sum(arrayGM)))
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2715,7 +2715,7 @@ class Descriptor(Sequence):
                 code = code + [(w * j) / (1 + w * sum(theta)) for j in theta]
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2781,7 +2781,7 @@ class Descriptor(Sequence):
                 code = code + [w * value / (1 + w * sum(theta)) for value in theta]
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2835,7 +2835,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2886,7 +2886,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2937,7 +2937,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -2988,7 +2988,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3032,7 +3032,7 @@ class Descriptor(Sequence):
                     code.append(pair_dict[pair] / sum)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3151,7 +3151,7 @@ class Descriptor(Sequence):
                     code += self.CalculateContent(tmp_distance_list, j, tmp_label_sets)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3319,7 +3319,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3372,7 +3372,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3436,7 +3436,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3501,7 +3501,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3552,7 +3552,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3603,7 +3603,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3651,7 +3651,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3697,7 +3697,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3743,7 +3743,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3807,7 +3807,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3871,7 +3871,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3935,7 +3935,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -3999,7 +3999,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4063,7 +4063,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4126,7 +4126,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4175,7 +4175,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4239,7 +4239,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4300,7 +4300,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4361,7 +4361,7 @@ class Descriptor(Sequence):
                 encodings = self.lambdaModel(fastas, myDict, gDict, gNames, ktuple, glValue)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4689,7 +4689,7 @@ class Descriptor(Sequence):
                     code.append(count[na])
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4725,7 +4725,7 @@ class Descriptor(Sequence):
                 code = code + tmpCode
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4769,7 +4769,7 @@ class Descriptor(Sequence):
                 code = code + tmpCode
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4800,7 +4800,7 @@ class Descriptor(Sequence):
                     code.append(sequence[0: j + 1].count(sequence[j]) / (j + 1))
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4839,7 +4839,7 @@ class Descriptor(Sequence):
                     code = code + chemical_property.get(aa, [0, 0, 0])
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4880,7 +4880,7 @@ class Descriptor(Sequence):
                             code.append(count[aa])
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4916,7 +4916,7 @@ class Descriptor(Sequence):
                         code.append(tag)
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -4967,7 +4967,7 @@ class Descriptor(Sequence):
                         code.append(myDict[pair] / sum)
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5060,7 +5060,7 @@ class Descriptor(Sequence):
                             # print(sequence[j: j+3], order[sequence[j: j+3]], po_number, p_num, ne_number, n_num)
                     encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5147,7 +5147,7 @@ class Descriptor(Sequence):
                             # print(sequence[j: j+3], order[sequence[j: j+3]], po_number, p_num, ne_number, n_num)
                     encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5186,7 +5186,7 @@ class Descriptor(Sequence):
                     code.append(EIIP_dict.get(aa, 0))
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5239,7 +5239,7 @@ class Descriptor(Sequence):
                 code = code + [EIIPxyz[triN] * trincleotide_frequency[triN] for triN in trincleotides]
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5283,7 +5283,7 @@ class Descriptor(Sequence):
                     code.append(pair_dict[pair] / sum)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5339,7 +5339,7 @@ class Descriptor(Sequence):
                         code += [0.5, 0.5, 0.5, 0.5]
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5400,7 +5400,7 @@ class Descriptor(Sequence):
                     code.append(dinucleotide_dict[sequence[j] + sequence[j - 1]] / j)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5460,7 +5460,7 @@ class Descriptor(Sequence):
                 encodings.append(code)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5521,7 +5521,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5586,7 +5586,7 @@ class Descriptor(Sequence):
                     code += normalized_code
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5643,7 +5643,7 @@ class Descriptor(Sequence):
                             code.append(0)
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5722,7 +5722,7 @@ class Descriptor(Sequence):
                     code.append(element_1 + element_2 - element_3)
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5814,7 +5814,7 @@ class Descriptor(Sequence):
                     code += self.CalculateContent(tmp_distance_list, j, tmp_label_sets)
                 encodings.append(code)
 
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5853,7 +5853,7 @@ class Descriptor(Sequence):
                     code += AA_dict.get(sequence[j: j+2], [0]*16)
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5890,7 +5890,7 @@ class Descriptor(Sequence):
                     code += AA_dict.get(sequence[j: j+3], [0]*64)
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5927,7 +5927,7 @@ class Descriptor(Sequence):
                     code += AA_dict.get(sequence[j: j+4], [0]*256)
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -5989,7 +5989,7 @@ class Descriptor(Sequence):
                 encodings.append(code)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6031,7 +6031,7 @@ class Descriptor(Sequence):
                 encodings.append(code)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6097,7 +6097,7 @@ class Descriptor(Sequence):
                 encodings.append(code)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6140,7 +6140,7 @@ class Descriptor(Sequence):
                 encodings.append(code)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6208,7 +6208,7 @@ class Descriptor(Sequence):
                 encodings.append(code)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6276,7 +6276,7 @@ class Descriptor(Sequence):
                 encodings.append(code)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6345,7 +6345,7 @@ class Descriptor(Sequence):
                 encodings.append(code)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6414,7 +6414,7 @@ class Descriptor(Sequence):
                 encodings.append(code)
 
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6473,7 +6473,7 @@ class Descriptor(Sequence):
                         code.append(acValue)
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6527,7 +6527,7 @@ class Descriptor(Sequence):
                         code.append(ccValue)
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6604,7 +6604,7 @@ class Descriptor(Sequence):
                         code.append(ccValue)
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6725,7 +6725,7 @@ class Descriptor(Sequence):
                     code.append((weight * thetaArray[k - 17]) / (1 + weight * sum(thetaArray)))
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6761,7 +6761,7 @@ class Descriptor(Sequence):
                     code.append((weight * thetaArray[k - 17]) / (1 + weight * sum(thetaArray)))
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6799,7 +6799,7 @@ class Descriptor(Sequence):
                     code.append((weight * thetaArray[k - 65]) / (1 + weight * sum(thetaArray)))
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6836,7 +6836,7 @@ class Descriptor(Sequence):
                     code.append((weight * thetaArray[k - 17]) / (1 + weight * sum(thetaArray)))
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
@@ -6872,7 +6872,7 @@ class Descriptor(Sequence):
                     code.append((weight * thetaArray[k - 65]) / (1 + weight * sum(thetaArray)))
                 encodings.append(code)
             self.encoding_array = np.array([])
-            self.encoding_array = np.array(encodings, dtype=str)
+            self.encoding_array = Descriptor.floater(np.array(encodings, dtype=str))
             self.column = self.encoding_array.shape[1]
             self.row = self.encoding_array.shape[0] - 1
             del encodings
