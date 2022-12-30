@@ -165,5 +165,6 @@ def check_Pse_arguments(method, type, parameters):
 
     if len(myIndex) == 0 or len(myProperty) == 0:
         return myIndex, myProperty, False
-
+    # print(myIndex)
+    # print(myProperty)
     return myIndex, myProperty, True
