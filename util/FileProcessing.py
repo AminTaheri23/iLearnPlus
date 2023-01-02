@@ -7060,7 +7060,7 @@ if __name__ == '__main__':
             'SCPseTNC': {'Tri-DNA-Phychem': tridna_list, 'weight': 0.1, 'lambdaValue': 2}, #'The SCPseTNC descriptor consider series correlation pseudo trinucleotide composition.')
     }
 
-    def process(feature_enc, path, batch_size):
+    def process(feature_enc, path, batch_size, save_path):
         start = time.time()
         seq = Descriptor(f'{path}', para_dict[feature_enc], )
         seq.is_equal = True
@@ -7099,9 +7099,14 @@ if __name__ == '__main__':
             # print(seq.get_data())
             # print(seq.row, seq.column)
             # print(seq.minimum_length, seq.maximum_length)
-            seq.save_descriptor(f'test_data/{feature_enc}.csv')
+
+            # if save path is not exist, make it.
+            if not os.path.exists(save_path):
+                os.makedirs(save_path)
+
+            seq.save_descriptor(f'{save_path}/{feature_enc}.csv')
             # print file size in kb
-            file_size = round(os.path.getsize(f'test_data/{feature_enc}.csv') / 1024, 2)
+            file_size = round(os.path.getsize(f'{save_path}/{feature_enc}.csv') / 1024, 2)
             print("File size:",file_size , "kb")
             print("Error Message: ", seq.error_msg)
             end = time.time()
@@ -7119,10 +7124,12 @@ if __name__ == '__main__':
 
     path = sys.argv[1]
     batch_size = int(sys.argv[2])
+    num_cores = int(sys.argv[3])
+    save_path = sys.argv[4]
 
-    num_cores = multiprocessing.cpu_count()
+    # num_cores = multiprocessing.cpu_count()
     print("num cores", num_cores)
-    size_time = Parallel(n_jobs=num_cores)(delayed(process)(feature_enc, path, batch_size) for feature_enc in para_dict)
+    size_time = Parallel(n_jobs=num_cores)(delayed(process)(feature_enc, path, batch_size, save_path) for feature_enc in para_dict)
     print("Total size:", round(sum(np.array(size_time)[:,0],2)), "kb")
     print("overall time", round(sum(np.array(size_time)[:,1],2)), "s")
 
