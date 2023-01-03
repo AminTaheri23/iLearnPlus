@@ -7075,7 +7075,7 @@ if __name__ == '__main__':
             'SCPseTNC': {'Tri-DNA-Phychem': tridna_list, 'weight': 0.1, 'lambdaValue': 2}, #'The SCPseTNC descriptor consider series correlation pseudo trinucleotide composition.')
     }
 
-    def process(seq, feature_enc, batch_size, save_path):
+    def process(seq, feature_enc, batch_size, save_path, para_dict):
         start = time.time()
         seq.is_equal = True
         seq.kw = para_dict[feature_enc]
@@ -7157,12 +7157,14 @@ if __name__ == '__main__':
         sequenctial_process['PSTNPss'] = para_dict.pop('PSTNPss', None)
         sequenctial_process['PSTNPds'] = para_dict.pop('PSTNPds', None)
         sequenctial_process['KNN'] = para_dict.pop('KNN', None)
-    
-        size_time = Parallel(n_jobs=num_cores)(delayed(process)(seq, feature_enc, batch_size, save_path) for feature_enc in para_dict)
-        size_time.append(Parallel(n_jobs=1)(delayed(process)(seq, feature_enc, batch_size, save_path) for feature_enc in sequenctial_process))
-        
+        size_time = Parallel(n_jobs=num_cores)(delayed(process)(seq, feature_enc, batch_size, save_path, para_dict) for feature_enc in para_dict)
+        size_time_seq = Parallel(n_jobs=1)(delayed(process)(seq, feature_enc, batch_size=len(seq.fasta_list), save_path=save_path, para_dict = sequenctial_process) for feature_enc in sequenctial_process)
+
         print("Total size:", round(sum(np.array(size_time)[:,0],2)), "kb")
+        print("Total size seq:", round(sum(np.array(size_time_seq)[:,0],2)), "kb")
+
         print("overall time", round(sum(np.array(size_time)[:,1],2)), "s")
+        print("overall time", round(sum(np.array(size_time_seq)[:,1],2)), "s")
 
         print("CMD time:", time.time() - start_time, 's')
 
