@@ -7030,9 +7030,9 @@ if __name__ == '__main__':
             'CKSNAP': {'kspace': 3}, # 'The CKSNAP feature encoding calculates the frequency of nucleic acid pairs separated by any k nucleic acid.')
             # 880 MB
             'NCP': {}, # 'Based on chemical properties, A can be represented by coordinates (1, 1, 1), \nC can be represented by coordinates (0, 1, 0), G can be represented by coordinates (1, 0, 0), \nU can be represented by coordinates (0, 0, 1). ')
-            # 744
+            # 744 (not batchable)
             'PSTNPss': {}, #  'The PSTNPss descriptor usie a statistical strategy based on single-stranded characteristics of DNA or RNA.')
-            # 696 MB
+            # 696 MB (not batchable)
             'PSTNPds': {}, # , 'The PSTNPds descriptor use a statistical strategy based on double-stranded characteristics of DNA according to complementary base pairing.')
             'EIIP': {}, # 'The EIIP directly use the EIIP value represent the nucleotide in the DNA sequence.')
             'PseEIIP': {}, # 'Electron-ion interaction pseudopotentials of trinucleotide.')
@@ -7046,6 +7046,7 @@ if __name__ == '__main__':
             'TPCP': {'Tri-DNA-Phychem': tridna_list}, # 'The TPCP descriptor calculate the value of frequency of trinucleotide multiplied by trinucleotide physicochemical properties.')
             # 'TPCP_type2': {'Tri-DNA-Phychem': tridna_list}, # 'The TPCP2 descriptor calculate the position specific trinucleotide physicochemical properties.')
             'MMI': {}, # 'The MMI descriptor calculate multivariate mutual information on a DNA/RNA sequence.')
+            # Not batchable
             'KNN': {}, # 'The K-nearest neighbor descriptor depicts how much one query sample resembles other samples.')
             # MB - RAM =  -
             'Z_curve_9bit': {}, # 'The Z curve parameters for frequencies of phase-specific mononucleotides.')
@@ -7103,6 +7104,8 @@ if __name__ == '__main__':
                     my_property_name, my_property_value, my_kmer, ok = CheckAccPseParameter.check_acc_arguments(
                         feature_enc, 'DNA', para_dict[feature_enc])
                     status = seq.make_acc_vector(my_property_name, my_property_value, my_kmer)
+            elif feature_enc == None:
+                continue
             else: 
                 getattr(seq, feature_enc)()
             print(feature_enc,"Error Message: ", seq.error_msg)
@@ -7148,11 +7151,20 @@ if __name__ == '__main__':
 
     # num_cores = multiprocessing.cpu_count()
     print("num cores", num_cores)
-    size_time = Parallel(n_jobs=num_cores)(delayed(process)(seq, feature_enc, batch_size, save_path) for feature_enc in para_dict)
-    print("Total size:", round(sum(np.array(size_time)[:,0],2)), "kb")
-    print("overall time", round(sum(np.array(size_time)[:,1],2)), "s")
+    if 'PSTNPss' in para_dict or 'PSTNPds' in para_dict or 'KNN' in para_dict :
+        sequenctial_process = {}
+        # remove PSTNPss, PSTNPds, KNN from para_dict
+        sequenctial_process['PSTNPss'] = para_dict.pop('PSTNPss', None)
+        sequenctial_process['PSTNPds'] = para_dict.pop('PSTNPds', None)
+        sequenctial_process['KNN'] = para_dict.pop('KNN', None)
+    
+        size_time = Parallel(n_jobs=num_cores)(delayed(process)(seq, feature_enc, batch_size, save_path) for feature_enc in para_dict)
+        size_time.append(Parallel(n_jobs=1)(delayed(process)(seq, feature_enc, batch_size, save_path) for feature_enc in sequenctial_process))
+        
+        print("Total size:", round(sum(np.array(size_time)[:,0],2)), "kb")
+        print("overall time", round(sum(np.array(size_time)[:,1],2)), "s")
 
-    print("CMD time:", time.time() - start_time, 's')
+        print("CMD time:", time.time() - start_time, 's')
 
 # myDict = {
 #     'DAC': {'DNA': didna_list, 'RNA': dirna_list},
