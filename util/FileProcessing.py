@@ -12,6 +12,8 @@ import math
 import random
 import pickle
 
+import tqdm
+
 import CheckAccPseParameter
 
 
@@ -6397,8 +6399,7 @@ class Descriptor(Sequence):
             AA_list = [aa1 + aa2 for aa1 in base for aa2 in base]
             for i in range(len(AA_list)):
                 AADict[AA_list[i]] = i
-
-            for elem in self.fasta_list:
+            for elem in tqdm.tqdm(self.fasta_list):
                 name, sequence, label = elem[0], re.sub('-', '', elem[1]), elem[2]
                 code = [name, label]
                 N = len(sequence) - 1
@@ -6558,7 +6559,7 @@ class Descriptor(Sequence):
             header = header + [n[0] + '-' + n[1] + '-lag.' + str(l) for n in propertyPairs for l in range(1, lag + 1)]
             encodings.append(header)
 
-            for i in fastas:
+            for i in tqdm.tqdm(fastas):
                 name, sequence, label = i[0], re.sub('-', '', i[1]), i[2]
                 code = [name, label]
                 ## Auto covariance
@@ -7013,131 +7014,121 @@ if __name__ == '__main__':
     tridna_list = "Dnase I;Bendability (DNAse);Bendability (consensus);Trinucleotide GC Content;Nucleosome positioning;Consensus_roll;Consensus-Rigid;Dnase I-Rigid;MW-Daltons;MW-kg;Nucleosome;Nucleosome-Rigid"
     para_dict = {
             # 720 MB - RAM = 13.3*720
-            'Kmer': {'kmer': 3}, # For kmer descriptor, the DNA or RNA sequences are represented\n as the occurrence frequencies of k neighboring nucleic acids.
-            'RCKmer': {'kmer': 3}, # 'The RCKmer descriptor is a variant of kmer descriptor,\n in which the kmers are not expected to be strand-specific. ')
-            'Mismatch': {'kmer': 3, 'mismatch': 1}, # 'The mismatch profile also calculates the occurrences of kmers,\n but allows max m inexact matching (m < k).')
-            # 'Subsequence': {'kmer': 3, 'delta': 0},  #   'The subsequence descriptor allows non-contiguous matching.')
-            # 'NAC': {}, # 'The NAC encoding calculates the frequency of each nucleic acid type in a nucleotide sequence.')
-            'ANF': {}, #  'The ANF encoding include the nucleotide frequency information and the distribution of each nucleotide in the RNA sequence.')
-            # 1120
-            'ENAC': {'sliding_window': 5}, #  'The ENAC descriptor calculates the NAC based on the sequence window\n of fixed length that continuously slides from the 5\' to 3\' terminus\n of each nucleotide sequence and can be usually applied to encode the\n nucleotide sequence with an equal length.')
-            # 1168 MB
-            'binary': {}, #'In the Binary encoding, each amino acid is represented by a 4-dimensional binary vector.')
-            # 4504 MB- 13.3 * 4504
-            'PS2': {}, #  'There are 4 x 4 = 16 pairs of adjacent pairwise nucleotides, \nthus a single variable representing one such pair gets one-hot\n (i.e. binary) encoded into 16 binary variables.')
-            # 'PS3': {}, # 'The PS3 descriptor is encoded for three adjacent nucleotides in a similar way with PS2.')
-            # 'PS4': {}, # 'The PS4 descriptor is encoded for four adjacent nucleotides in a similar way with PS2.')
-            'CKSNAP': {'kspace': 3}, # 'The CKSNAP feature encoding calculates the frequency of nucleic acid pairs separated by any k nucleic acid.')
-            # 880 MB
-            'NCP': {}, # 'Based on chemical properties, A can be represented by coordinates (1, 1, 1), \nC can be represented by coordinates (0, 1, 0), G can be represented by coordinates (1, 0, 0), \nU can be represented by coordinates (0, 0, 1). ')
-            # 744 (not batchable)
-            'PSTNPss': {}, #  'The PSTNPss descriptor usie a statistical strategy based on single-stranded characteristics of DNA or RNA.')
-            # 696 MB (not batchable)
-            'PSTNPds': {}, # , 'The PSTNPds descriptor use a statistical strategy based on double-stranded characteristics of DNA according to complementary base pairing.')
-            'EIIP': {}, # 'The EIIP directly use the EIIP value represent the nucleotide in the DNA sequence.')
-            'PseEIIP': {}, # 'Electron-ion interaction pseudopotentials of trinucleotide.')
-            # 'ASDC': {}, #  'The adaptive skip dipeptide composition is a modified dinucleotide composition, \nwhich sufficiently considers the correlation information present not only between \nadjacent residues but also between intervening residues.')
-            # 1152 MB
-            'DBE': {}, #  'The DBE descriptor encapsulates the positional information of the dinucleotide at each position in the sequence.')
-            'LPDF': {}, # 'The LPDF descriptor calculate the local position-specific dinucleotide frequency.')
-            # 'DPCP': {'Di-DNA-Phychem': didna_list, 'nlag': 3},# 'The DPCP descriptor calculate the value of frequency of dinucleotide multiplied by dinucleotide physicochemical properties.')
-            # 'DPCP_type2': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, # 'The DPCP2 descriptor calculate the position specific dinucleotide physicochemical properties.')
-            # 3960 MB - - 
-            'TPCP': {'Tri-DNA-Phychem': tridna_list}, # 'The TPCP descriptor calculate the value of frequency of trinucleotide multiplied by trinucleotide physicochemical properties.')
-            # 'TPCP_type2': {'Tri-DNA-Phychem': tridna_list}, # 'The TPCP2 descriptor calculate the position specific trinucleotide physicochemical properties.')
-            'MMI': {}, # 'The MMI descriptor calculate multivariate mutual information on a DNA/RNA sequence.')
-            # Not batchable
-            'KNN': {}, # 'The K-nearest neighbor descriptor depicts how much one query sample resembles other samples.')
-            # MB - RAM =  -
-            'Z_curve_9bit': {}, # 'The Z curve parameters for frequencies of phase-specific mononucleotides.')
-            # 'Z_curve_12bit': {}, #  'The Z curve parameters for frequencies of phaseindependent di-nucleotides')
-            # 'Z_curve_36bit': {}, # 'The Z curve parameters for frequencies of phase-specific di-nucleotides')
-            # 'Z_curve_48bit': {}, # 'The Z curve parameters for frequencies of phaseindependent tri-nucleotides')
-            # 'Z_curve_144bit': {}, # 'The Z curve parameters for frequencies of phase-specific tri-nucleotides')
-            # 2416 MB
-            'NMBroto': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, # 'The autocorrelation descriptors are defined based on the distribution\n of amino acid properties along the sequence.')
-            # 'Moran': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, #'The autocorrelation descriptors are defined based on the distribution\n of amino acid properties along the sequence.')
-            # 1936 MB
-            'Geary': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, #'The autocorrelation descriptors are defined based on the distribution\n of amino acid properties along the sequence.')
-            # 'DAC': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, # 'The DAC descriptor measures the correlation of the same physicochemical \nindex between two dinucleotides separated by a distance of lag along the sequence.')
-            # 'DCC': {'Di-DNA-Phychem': didna_list_default, 'nlag': 3}, # 'The DCC descriptor measures the correlation of two different physicochemical \nindices between two dinucleotides separated by lag nucleic acids along the sequence.')
-            'DACC': {'Di-DNA-Phychem': didna_list_default, 'nlag': 3}, # 'The DACC encoding is a combination of DAC and DCC encoding.')
-            # 'TAC': {'Tri-DNA-Phychem': tridna_list, 'nlag': 3}, #  'The TAC descriptor measures the correlation of the same physicochemical \nindex between two trinucleotides separated by a distance of lag along the sequence.')
-            # 'TCC': {'Tri-DNA-Phychem': tridna_list, 'nlag': 3}, # 'The TCC descriptor measures the correlation of two different physicochemical \nindices between two trinucleotides separated by lag nucleic acids along the sequence.')
-            # 2400 MB
-            'TACC': {'Tri-DNA-Phychem': tridna_list, 'nlag': 3}, # 'The TACC encoding is a combination of TAC and TCC encoding.')
-            'PseDNC': {'Di-DNA-Phychem': didna_list, 'weight': 0.1, 'lambdaValue': 2}, # 'The PseDNC encodings incorporate contiguous local sequence-order information and the global sequence-order information into the feature vector of the nucleotide sequence.')
-            'PseKNC': {'Di-DNA-Phychem': didna_list_pseknc, 'weight': 0.1, 'lambdaValue': 2, 'kmer': 3}, # The PseKNC descriptor incorporate the k-tuple nucleotide composition.')
-            'PCPseDNC': {'Di-DNA-Phychem': didna_list, 'weight': 0.1, 'lambdaValue': 2}, #  'The PCPseDNC descriptor consider parallel correlation pseudo trinucleotide composition information.')
-            'PCPseTNC': {'Tri-DNA-Phychem': tridna_list, 'weight': 0.1, 'lambdaValue': 2}, #  'The PCPseTNC descriptor consider parallel correlation pseudo trinucleotide composition information.')
-            # 1936 mb
-            'SCPseDNC': {'Di-DNA-Phychem': didna_list, 'weight': 0.1, 'lambdaValue': 2}, # 'The SCPseDNC descriptor consider series correlation pseudo dinucleotide composition information.')
-            'SCPseTNC': {'Tri-DNA-Phychem': tridna_list, 'weight': 0.1, 'lambdaValue': 2}, #'The SCPseTNC descriptor consider series correlation pseudo trinucleotide composition.')
+           'Kmer': {'kmer': 3}, # For kmer descriptor, the DNA or RNA sequences are represented\n as the occurrence frequencies of k neighboring nucleic acids.
+           'RCKmer': {'kmer': 3}, # 'The RCKmer descriptor is a variant of kmer descriptor,\n in which the kmers are not expected to be strand-specific. ')
+           'Mismatch': {'kmer': 3, 'mismatch': 1}, # 'The mismatch profile also calculates the occurrences of kmers,\n but allows max m inexact matching (m < k).')
+           # 'Subsequence': {'kmer': 3, 'delta': 0},  #   'The subsequence descriptor allows non-contiguous matching.')
+           # 'NAC': {}, # 'The NAC encoding calculates the frequency of each nucleic acid type in a nucleotide sequence.')
+           'ANF': {}, #  'The ANF encoding include the nucleotide frequency information and the distribution of each nucleotide in the RNA sequence.')
+           # 1120
+           'ENAC': {'sliding_window': 5}, #  'The ENAC descriptor calculates the NAC based on the sequence window\n of fixed length that continuously slides from the 5\' to 3\' terminus\n of each nucleotide sequence and can be usually applied to encode the\n nucleotide sequence with an equal length.')
+           # 1168 MB
+           'binary': {}, #'In the Binary encoding, each amino acid is represented by a 4-dimensional binary vector.')
+           # 4504 MB- 13.3 * 4504
+           'PS2': {}, #  'There are 4 x 4 = 16 pairs of adjacent pairwise nucleotides, \nthus a single variable representing one such pair gets one-hot\n (i.e. binary) encoded into 16 binary variables.')
+           # 'PS3': {}, # 'The PS3 descriptor is encoded for three adjacent nucleotides in a similar way with PS2.')
+           # 'PS4': {}, # 'The PS4 descriptor is encoded for four adjacent nucleotides in a similar way with PS2.')
+           'CKSNAP': {'kspace': 3}, # 'The CKSNAP feature encoding calculates the frequency of nucleic acid pairs separated by any k nucleic acid.')
+           # 880 MB
+           'NCP': {}, # 'Based on chemical properties, A can be represented by coordinates (1, 1, 1), \nC can be represented by coordinates (0, 1, 0), G can be represented by coordinates (1, 0, 0), \nU can be represented by coordinates (0, 0, 1). ')
+           # 744 (not batchable)
+           'PSTNPss': {}, #  'The PSTNPss descriptor usie a statistical strategy based on single-stranded characteristics of DNA or RNA.')
+           # 696 MB (not batchable)
+           'PSTNPds': {}, # , 'The PSTNPds descriptor use a statistical strategy based on double-stranded characteristics of DNA according to complementary base pairing.')
+           'EIIP': {}, # 'The EIIP directly use the EIIP value represent the nucleotide in the DNA sequence.')
+           'PseEIIP': {}, # 'Electron-ion interaction pseudopotentials of trinucleotide.')
+           # 'ASDC': {}, #  'The adaptive skip dipeptide composition is a modified dinucleotide composition, \nwhich sufficiently considers the correlation information present not only between \nadjacent residues but also between intervening residues.')
+           # 1152 MB
+           'DBE': {}, #  'The DBE descriptor encapsulates the positional information of the dinucleotide at each position in the sequence.')
+           'LPDF': {}, # 'The LPDF descriptor calculate the local position-specific dinucleotide frequency.')
+           # 'DPCP': {'Di-DNA-Phychem': didna_list, 'nlag': 3},# 'The DPCP descriptor calculate the value of frequency of dinucleotide multiplied by dinucleotide physicochemical properties.')
+           # 'DPCP_type2': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, # 'The DPCP2 descriptor calculate the position specific dinucleotide physicochemical properties.')
+           # 3960 MB - - 
+           'TPCP': {'Tri-DNA-Phychem': tridna_list}, # 'The TPCP descriptor calculate the value of frequency of trinucleotide multiplied by trinucleotide physicochemical properties.')
+           # 'TPCP_type2': {'Tri-DNA-Phychem': tridna_list}, # 'The TPCP2 descriptor calculate the position specific trinucleotide physicochemical properties.')
+           'MMI': {}, # 'The MMI descriptor calculate multivariate mutual information on a DNA/RNA sequence.')
+           # Not batchable
+           'KNN': {}, # 'The K-nearest neighbor descriptor depicts how much one query sample resembles other samples.')
+           # MB - RAM =  -
+           'Z_curve_9bit': {}, # 'The Z curve parameters for frequencies of phase-specific mononucleotides.')
+           # 'Z_curve_12bit': {}, #  'The Z curve parameters for frequencies of phaseindependent di-nucleotides')
+           # 'Z_curve_36bit': {}, # 'The Z curve parameters for frequencies of phase-specific di-nucleotides')
+           # 'Z_curve_48bit': {}, # 'The Z curve parameters for frequencies of phaseindependent tri-nucleotides')
+           # 'Z_curve_144bit': {}, # 'The Z curve parameters for frequencies of phase-specific tri-nucleotides')
+           # 2416 MB
+           'NMBroto': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, # 'The autocorrelation descriptors are defined based on the distribution\n of amino acid properties along the sequence.')
+           # 'Moran': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, #'The autocorrelation descriptors are defined based on the distribution\n of amino acid properties along the sequence.')
+           # 1936 MB
+           'Geary': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, #'The autocorrelation descriptors are defined based on the distribution\n of amino acid properties along the sequence.')
+           # 'DAC': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, # 'The DAC descriptor measures the correlation of the same physicochemical \nindex between two dinucleotides separated by a distance of lag along the sequence.')
+           # 'DCC': {'Di-DNA-Phychem': didna_list_default, 'nlag': 3}, # 'The DCC descriptor measures the correlation of two different physicochemical \nindices between two dinucleotides separated by lag nucleic acids along the sequence.')
+           'DACC': {'Di-DNA-Phychem': didna_list_default, 'nlag': 3}, # 'The DACC encoding is a combination of DAC and DCC encoding.')
+           # 'TAC': {'Tri-DNA-Phychem': tridna_list, 'nlag': 3}, #  'The TAC descriptor measures the correlation of the same physicochemical \nindex between two trinucleotides separated by a distance of lag along the sequence.')
+           # 'TCC': {'Tri-DNA-Phychem': tridna_list, 'nlag': 3}, # 'The TCC descriptor measures the correlation of two different physicochemical \nindices between two trinucleotides separated by lag nucleic acids along the sequence.')
+           # 2400 MB
+           'TACC': {'Tri-DNA-Phychem': tridna_list, 'nlag': 3}, # 'The TACC encoding is a combination of TAC and TCC encoding.')
+           'PseDNC': {'Di-DNA-Phychem': didna_list, 'weight': 0.1, 'lambdaValue': 2}, # 'The PseDNC encodings incorporate contiguous local sequence-order information and the global sequence-order information into the feature vector of the nucleotide sequence.')
+           'PseKNC': {'Di-DNA-Phychem': didna_list_pseknc, 'weight': 0.1, 'lambdaValue': 2, 'kmer': 3}, # The PseKNC descriptor incorporate the k-tuple nucleotide composition.')
+           'PCPseDNC': {'Di-DNA-Phychem': didna_list, 'weight': 0.1, 'lambdaValue': 2}, #  'The PCPseDNC descriptor consider parallel correlation pseudo trinucleotide composition information.')
+           'PCPseTNC': {'Tri-DNA-Phychem': tridna_list, 'weight': 0.1, 'lambdaValue': 2}, #  'The PCPseTNC descriptor consider parallel correlation pseudo trinucleotide composition information.')
+           # 1936 mb
+           'SCPseDNC': {'Di-DNA-Phychem': didna_list, 'weight': 0.1, 'lambdaValue': 2}, # 'The SCPseDNC descriptor consider series correlation pseudo dinucleotide composition information.')
+           'SCPseTNC': {'Tri-DNA-Phychem': tridna_list, 'weight': 0.1, 'lambdaValue': 2}, #'The SCPseTNC descriptor consider series correlation pseudo trinucleotide composition.')
     }
 
-    def process(seq, feature_enc, batch_size, save_path, para_dict):
-        start = time.time()
-        seq.is_equal = True
-        seq.kw = para_dict[feature_enc]
-        fasta_copy = seq.fasta_list.copy()
-        # make indexes for batch processing with batch_size.
-        indexes = [i for i in range(0, len(fasta_copy)+1, batch_size)]
-        if len(fasta_copy) % batch_size != 0:
-            indexes.append(len(fasta_copy))
-        # batch processing
-        for i in range(len(indexes) - 1):
-            seq.fasta_list = fasta_copy[indexes[i]:indexes[i + 1]]
-            print("Error Message: ", seq.error_msg)
-            if feature_enc in ['PseDNC', 'PseKNC', 'PCPseDNC', 'PCPseTNC', 'SCPseDNC', 'SCPseTNC']:
-                name, value, ok = CheckAccPseParameter.check_Pse_arguments(feature_enc, 'DNA', para_dict[feature_enc])
-                getattr(seq, feature_enc)(name, value)
-            elif feature_enc in ['DAC', 'DCC', 'DACC', 'TAC', 'TCC', 'TACC']:
-                if feature_enc in ['DAC', 'TAC']:
-                    my_property_name, my_property_value, my_kmer, ok = CheckAccPseParameter.check_acc_arguments(
-                        feature_enc, 'DNA', para_dict[feature_enc])
-                    status = seq.make_ac_vector(my_property_name, my_property_value, my_kmer)
-                elif feature_enc in ['DCC', 'TCC']:
-                    my_property_name, my_property_value, my_kmer, ok = CheckAccPseParameter.check_acc_arguments(
-                        feature_enc, 'DNA', para_dict[feature_enc])
-                    status = seq.make_cc_vector(my_property_name, my_property_value, my_kmer)
-                elif feature_enc in ['DACC', 'TACC']:
-                    my_property_name, my_property_value, my_kmer, ok = CheckAccPseParameter.check_acc_arguments(
-                        feature_enc, 'DNA', para_dict[feature_enc])
-                    status = seq.make_acc_vector(my_property_name, my_property_value, my_kmer)
-            elif feature_enc == None:
-                continue
-            else: 
-                getattr(seq, feature_enc)()
-            print(feature_enc,"Error Message: ", seq.error_msg)
-            traceback.print_exc()
-            # print(seq.get_header())
-            # print(seq.get_data())
-            # print(seq.row, seq.column)
-            # print(seq.minimum_length, seq.maximum_length)
-
-            # if save path is not exist, make it.
-            if not os.path.exists(save_path):
-                os.makedirs(save_path)
-
-            seq.save_descriptor(f'{save_path}/{feature_enc}.csv')
-            # print file size in kb
-            # file_size = round(os.path.getsize(f'{save_path}/{feature_enc}.csv') / 1024, 2)
-            file_size = 1
-            print("File size:",file_size , "kb")
-            print("Error Message: ", seq.error_msg)
-            end = time.time()
-            print(f"{feature_enc} time", end - start)
-            print("####################")
-
-        return [file_size, end - start]
-
-    # for feature_enc in para_dict:
-    #     process(feature_enc, path)
-
-
+    
     from joblib import Parallel, delayed
     import multiprocessing
     
+    def batch_processing(seq, seq_list, feature_enc, save_path, para_dict, i):
+        seq.fasta_list = seq_list
+        print (len(seq_list))
+        # print("Error Message: ", seq.error_msg)
+        if feature_enc in ['PseDNC', 'PseKNC', 'PCPseDNC', 'PCPseTNC', 'SCPseDNC', 'SCPseTNC']:
+            name, value, ok = CheckAccPseParameter.check_Pse_arguments(feature_enc, 'DNA', para_dict[feature_enc])
+            getattr(seq, feature_enc)(name, value)
+        elif feature_enc in ['DAC', 'DCC', 'DACC', 'TAC', 'TCC', 'TACC']:
+            if feature_enc in ['DAC', 'TAC']:
+                my_property_name, my_property_value, my_kmer, ok = CheckAccPseParameter.check_acc_arguments(
+                    feature_enc, 'DNA', para_dict[feature_enc])
+                status = seq.make_ac_vector(my_property_name, my_property_value, my_kmer)
+            elif feature_enc in ['DCC', 'TCC']:
+                my_property_name, my_property_value, my_kmer, ok = CheckAccPseParameter.check_acc_arguments(
+                    feature_enc, 'DNA', para_dict[feature_enc])
+                status = seq.make_cc_vector(my_property_name, my_property_value, my_kmer)
+            elif feature_enc in ['DACC', 'TACC']:
+                my_property_name, my_property_value, my_kmer, ok = CheckAccPseParameter.check_acc_arguments(
+                    feature_enc, 'DNA', para_dict[feature_enc])
+                status = seq.make_acc_vector(my_property_name, my_property_value, my_kmer)
+        elif feature_enc == None:
+            return None
+        else: 
+            getattr(seq, feature_enc)()
+            # time.sleep(1)
+        # print(feature_enc,"Error Message: ", seq.error_msg)
+        traceback.print_exc()
+
+        # if save path is not exist, make it.
+        if not os.path.exists(save_path):
+            os.makedirs(save_path)
+
+        seq.save_descriptor(f'{save_path}/{feature_enc}_{i}.csv')
+        # print file size in kb
+        # file_size = round(os.path.getsize(f'{save_path}/{feature_enc}.csv') / 1024, 2)
+        # print("Error Message: ", seq.error_msg)
+        # print("####################")
+
+    def process(seq, feature_enc, batch_size, save_path, para_dict):
+        seq.is_equal = True
+        seq.kw = para_dict[feature_enc]
+        # make indexes for batch processing with batch_size.
+        indexes = [i for i in range(0, len(seq.fasta_list)+1, batch_size)]
+        fasta_copy = seq.fasta_list.copy()
+        if len(fasta_copy) % batch_size != 0:
+            indexes.append(len(fasta_copy))
+        
+        # batch processing
+        Parallel(n_jobs=round(num_cores))(delayed(batch_processing)(seq, fasta_copy[indexes[i]:indexes[i + 1]], feature_enc, save_path, para_dict, i) for i in range(len(indexes)-1))
 
     path = sys.argv[1]
     batch_size = int(sys.argv[2])
@@ -7151,22 +7142,24 @@ if __name__ == '__main__':
 
     # num_cores = multiprocessing.cpu_count()
     print("num cores", num_cores)
+    sequenctial_process = {}
     if 'PSTNPss' in para_dict or 'PSTNPds' in para_dict or 'KNN' in para_dict :
-        sequenctial_process = {}
         # remove PSTNPss, PSTNPds, KNN from para_dict
         sequenctial_process['PSTNPss'] = para_dict.pop('PSTNPss', None)
         sequenctial_process['PSTNPds'] = para_dict.pop('PSTNPds', None)
         sequenctial_process['KNN'] = para_dict.pop('KNN', None)
-        size_time = Parallel(n_jobs=num_cores)(delayed(process)(seq, feature_enc, batch_size, save_path, para_dict) for feature_enc in para_dict)
-        size_time_seq = Parallel(n_jobs=1)(delayed(process)(seq, feature_enc, batch_size=len(seq.fasta_list), save_path=save_path, para_dict = sequenctial_process) for feature_enc in sequenctial_process)
+    # size_time = Parallel(n_jobs=round(2))(delayed(process)(seq, feature_enc, batch_size, save_path, para_dict) for feature_enc in para_dict)
+    # for feature_enc in para_dict:
+    #     process(seq, feature_enc, batch_size, save_path, para_dict)
+    size_time_seq = Parallel(n_jobs=1)(delayed(process)(seq, feature_enc, batch_size=len(seq.fasta_list), save_path=save_path, para_dict = sequenctial_process) for feature_enc in sequenctial_process)
 
-        print("Total size:", round(sum(np.array(size_time)[:,0],2)), "kb")
-        print("Total size seq:", round(sum(np.array(size_time_seq)[:,0],2)), "kb")
+        # print("Total size:", round(sum(np.array(size_time)[:,0],2)), "kb")
+        # print("Total size seq:", round(sum(np.array(size_time_seq)[:,0],2)), "kb")
 
-        print("overall time", round(sum(np.array(size_time)[:,1],2)), "s")
-        print("overall time", round(sum(np.array(size_time_seq)[:,1],2)), "s")
+        # print("overall time", round(sum(np.array(size_time)[:,1],2)), "s")
+        # print("overall time", round(sum(np.array(size_time_seq)[:,1],2)), "s")
 
-        print("CMD time:", time.time() - start_time, 's')
+        # print("CMD time:", time.time() - start_time, 's')
 
 # myDict = {
 #     'DAC': {'DNA': didna_list, 'RNA': dirna_list},
