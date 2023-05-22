@@ -12,10 +12,28 @@ import math
 import random
 import pickle
 
-import tqdm
+from joblib import Parallel, delayed
+import multiprocessing
 
+from tqdm.auto import tqdm
+from tqdm.contrib.concurrent import process_map
 import CheckAccPseParameter
 
+class ProgressParallel(Parallel):
+    def __init__(self, use_tqdm=True, total=None, *args, **kwargs):
+        self._use_tqdm = use_tqdm
+        self._total = total
+        super().__init__(*args, **kwargs)
+
+    def __call__(self, *args, **kwargs):
+        with tqdm(disable=not self._use_tqdm, total=self._total) as self._pbar:
+            return Parallel.__call__(self, *args, **kwargs)
+
+    def print_progress(self):
+        if self._total is None:
+            self._pbar.total = self.n_dispatched_tasks
+        self._pbar.n = self.n_completed_tasks
+        self._pbar.refresh()
 
 class Sequence(object):
     def __init__(self, file):
@@ -6399,7 +6417,7 @@ class Descriptor(Sequence):
             AA_list = [aa1 + aa2 for aa1 in base for aa2 in base]
             for i in range(len(AA_list)):
                 AADict[AA_list[i]] = i
-            for elem in tqdm.tqdm(self.fasta_list):
+            for elem in (self.fasta_list):
                 name, sequence, label = elem[0], re.sub('-', '', elem[1]), elem[2]
                 code = [name, label]
                 N = len(sequence) - 1
@@ -6559,7 +6577,7 @@ class Descriptor(Sequence):
             header = header + [n[0] + '-' + n[1] + '-lag.' + str(l) for n in propertyPairs for l in range(1, lag + 1)]
             encodings.append(header)
 
-            for i in tqdm.tqdm(fastas):
+            for i in (fastas):
                 name, sequence, label = i[0], re.sub('-', '', i[1]), i[2]
                 code = [name, label]
                 ## Auto covariance
@@ -6926,7 +6944,7 @@ class Descriptor(Sequence):
     """ functions """
     def floater(array):
         # gets an np array, converts float dtype vals to float 16, doesn't change the rest
-        array[1:, 1:] = array[1:, 1:].astype(np.float16)
+        array[1:, 1:] = array[1:, 1:].astype(np.float32)
         return array
 
     def get_header(self):
@@ -7007,82 +7025,83 @@ if __name__ == '__main__':
 
     start_time = time.time()
     
-    didna_list = "Twist;Tilt;Roll;Shift;Slide;Rise;Base stacking;Protein induced deformability;B-DNA twist;Dinucleotide GC Content;A-philicity;Propeller twist;Duplex stability:(freeenergy);Duplex tability(disruptenergy);DNA denaturation;Bending stiffness;Protein DNA twist;Stabilising energy of Z-DNA;Aida_BA_transition;Breslauer_dG;Breslauer_dH;Breslauer_dS;Electron_interaction;Hartman_trans_free_energy;Helix-Coil_transition;Ivanov_BA_transition;Lisser_BZ_transition;Polar_interaction;SantaLucia_dG;SantaLucia_dH;SantaLucia_dS;Sarai_flexibility;Stability;Stacking_energy;Sugimoto_dG;Sugimoto_dH;Sugimoto_dS;Watson-Crick_interaction;Clash Strength;Roll_roll;Twist stiffness;Tilt stiffness;Shift_rise;Adenine content;Direction;Twist_shift;Enthalpy1;Twist_twist;Roll_shift;Shift_slide;Shift2;Tilt3;Tilt1;Tilt4;Tilt2;Slide (DNA-protein complex)1;Tilt_shift;Twist_tilt;Twist (DNA-protein complex)1;Tilt_rise;Roll_rise;Stacking energy;Stacking energy1;Stacking energy2;Stacking energy3;Propeller Twist;Roll11;Rise (DNA-protein complex);Tilt_tilt;Roll4;Roll2;Roll3;Roll1;Minor Groove Size;GC content;Slide_slide;Enthalpy;Shift_shift;Slide stiffness;Melting Temperature1;Flexibility_slide;Minor Groove Distance;Rise (DNA-protein complex)1;Tilt (DNA-protein complex);Guanine content;Roll (DNA-protein complex)1;Entropy;Cytosine content;Major Groove Size;Twist_rise;Major Groove Distance;Twist (DNA-protein complex);Purine (AG) content;Melting Temperature;Free energy;Tilt_slide;Major Groove Width;Major Groove Depth;Wedge;Free energy8;Free energy6;Free energy7;Free energy4;Free energy5;Free energy2;Free energy3;Free energy1;Twist_roll;Shift (DNA-protein complex);Rise_rise;Flexibility_shift;Shift (DNA-protein complex)1;Thymine content;Slide_rise;Tilt_roll;Tip;Keto (GT) content;Roll stiffness;Minor Groove Width;Inclination;Entropy1;Roll_slide;Slide (DNA-protein complex);Twist1;Twist3;Twist2;Twist5;Twist4;Twist7;Twist6;Tilt (DNA-protein complex)1;Twist_slide;Minor Groove Depth;Roll (DNA-protein complex);Rise2;Persistance Length;Rise3;Shift stiffness;Probability contacting nucleosome core;Mobility to bend towards major groove;Slide3;Slide2;Slide1;Shift1;Bend;Rise1;Rise stiffness;Mobility to bend towards minor groove"
-    # didna_list = "Twist;Tilt;Roll;Shift;Slide;Rise"
+    didna_list = "Twist;Tilt;Roll;Shift;Slide;Rise;Base stacking;Protein induced deformability;B-DNA twist;Dinucleotide GC Content;A-philicity;Duplex stability:(freeenergy);Duplex tability(disruptenergy);DNA denaturation;Bending stiffness;Protein DNA twist;Stabilising energy of Z-DNA;Aida_BA_transition;Breslauer_dG;Breslauer_dH;Breslauer_dS;Electron_interaction;Hartman_trans_free_energy;Helix-Coil_transition;Ivanov_BA_transition;Lisser_BZ_transition;Polar_interaction;SantaLucia_dG;SantaLucia_dH;SantaLucia_dS;Sarai_flexibility;Stability;Stacking_energy;Sugimoto_dG;Sugimoto_dH;Sugimoto_dS;Watson-Crick_interaction;Clash Strength;Roll_roll;Twist stiffness;Tilt stiffness;Shift_rise;Adenine content;Direction;Twist_shift;Enthalpy1;Twist_twist;Roll_shift;Shift_slide;Shift2;Tilt3;Tilt1;Tilt4;Tilt2;Slide (DNA-protein complex)1;Tilt_shift;Twist_tilt;Twist (DNA-protein complex)1;Tilt_rise;Roll_rise;Stacking energy;Stacking energy1;Stacking energy2;Stacking energy3;Propeller Twist;Roll11;Rise (DNA-protein complex);Tilt_tilt;Roll4;Roll2;Roll3;Roll1;Minor Groove Size;GC content;Slide_slide;Enthalpy;Shift_shift;Slide stiffness;Melting Temperature1;Flexibility_slide;Minor Groove Distance;Rise (DNA-protein complex)1;Tilt (DNA-protein complex);Guanine content;Roll (DNA-protein complex)1;Entropy;Cytosine content;Major Groove Size;Twist_rise;Major Groove Distance;Twist (DNA-protein complex);Purine (AG) content;Melting Temperature;Free energy;Tilt_slide;Major Groove Width;Major Groove Depth;Wedge;Free energy8;Free energy6;Free energy7;Free energy4;Free energy5;Free energy2;Free energy3;Free energy1;Twist_roll;Shift (DNA-protein complex);Rise_rise;Flexibility_shift;Shift (DNA-protein complex)1;Thymine content;Slide_rise;Tilt_roll;Tip;Keto (GT) content;Roll stiffness;Minor Groove Width;Inclination;Entropy1;Roll_slide;Slide (DNA-protein complex);Twist1;Twist3;Twist2;Twist5;Twist4;Twist7;Twist6;Tilt (DNA-protein complex)1;Twist_slide;Minor Groove Depth;Roll (DNA-protein complex);Rise2;Persistance Length;Rise3;Shift stiffness;Probability contacting nucleosome core;Mobility to bend towards major groove;Slide3;Slide2;Slide1;Shift1;Bend;Rise1;Rise stiffness;Mobility to bend towards minor groove"
+    didna_list_nmboroto = "Twist;Tilt;Roll;Shift;Slide;Rise;Base stacking;Protein induced deformability;B-DNA twist;Dinucleotide GC Content;A-philicity;Duplex stability:(freeenergy);Duplex tability(disruptenergy);DNA denaturation;Bending stiffness;Protein DNA twist;Stabilising energy of Z-DNA;Aida_BA_transition;Breslauer_dG;Breslauer_dH;Breslauer_dS;Electron_interaction;Hartman_trans_free_energy;Helix-Coil_transition;Ivanov_BA_transition;Lisser_BZ_transition;Polar_interaction;SantaLucia_dG;SantaLucia_dH;SantaLucia_dS;Sarai_flexibility;Stability;Stacking_energy;Sugimoto_dG;Sugimoto_dH;Sugimoto_dS;Watson-Crick_interaction;Clash Strength;Roll_roll;Twist stiffness;Tilt stiffness;Shift_rise;Adenine content;Direction;Twist_shift;Enthalpy1;Twist_twist;Roll_shift;Shift_slide;Shift2;Tilt3;Tilt1;Tilt4;Tilt2;Slide (DNA-protein complex)1;Twist_tilt;Twist (DNA-protein complex)1;Tilt_rise;Roll_rise;Stacking energy;Stacking energy1;Stacking energy2;Stacking energy3;Propeller Twist;Roll11;Rise (DNA-protein complex);Tilt_tilt;Roll4;Roll2;Roll3;Roll1;Minor Groove Size;GC content;Slide_slide;Enthalpy;Shift_shift;Slide stiffness;Melting Temperature1;Flexibility_slide;Minor Groove Distance;Rise (DNA-protein complex)1;Tilt (DNA-protein complex);Guanine content;Roll (DNA-protein complex)1;Entropy;Cytosine content;Major Groove Size;Twist_rise;Major Groove Distance;Twist (DNA-protein complex);Purine (AG) content;Melting Temperature;Free energy;Tilt_slide;Major Groove Depth;Wedge;Free energy8;Free energy6;Free energy7;Free energy4;Free energy5;Free energy2;Free energy3;Free energy1;Twist_roll;Shift (DNA-protein complex);Rise_rise;Flexibility_shift;Shift (DNA-protein complex)1;Thymine content;Slide_rise;Tilt_roll;Tip;Keto (GT) content;Roll stiffness;Minor Groove Width;Inclination;Entropy1;Roll_slide;Slide (DNA-protein complex);Twist1;Twist3;Twist2;Twist5;Twist4;Twist7;Twist6;Tilt (DNA-protein complex)1;Twist_slide;Minor Groove Depth;Roll (DNA-protein complex);Rise2;Rise3;Shift stiffness;Probability contacting nucleosome core;Mobility to bend towards major groove;Slide3;Slide2;Slide1;Shift1;Bend;Rise1;Rise stiffness;Mobility to bend towards minor groove"
     didna_list_pseknc = "Twist;Tilt;Roll;Shift;Slide;Rise"
     didna_list_default = "Twist;Tilt;Roll;Shift;Slide;Rise"
     tridna_list = "Dnase I;Bendability (DNAse);Bendability (consensus);Trinucleotide GC Content;Nucleosome positioning;Consensus_roll;Consensus-Rigid;Dnase I-Rigid;MW-Daltons;MW-kg;Nucleosome;Nucleosome-Rigid"
     para_dict = {
             # 720 MB - RAM = 13.3*720
-           'Kmer': {'kmer': 3}, # For kmer descriptor, the DNA or RNA sequences are represented\n as the occurrence frequencies of k neighboring nucleic acids.
-           'RCKmer': {'kmer': 3}, # 'The RCKmer descriptor is a variant of kmer descriptor,\n in which the kmers are not expected to be strand-specific. ')
-           'Mismatch': {'kmer': 3, 'mismatch': 1}, # 'The mismatch profile also calculates the occurrences of kmers,\n but allows max m inexact matching (m < k).')
+        #    'Kmer': {'kmer': 3}, # For kmer descriptor, the DNA or RNA sequences are represented\n as the occurrence frequencies of k neighboring nucleic acids.
+        #    'RCKmer': {'kmer': 3}, # 'The RCKmer descriptor is a variant of kmer descriptor,\n in which the kmers are not expected to be strand-specific. ')
+        #    'Mismatch': {'kmer': 3, 'mismatch': 1}, # 'The mismatch profile also calculates the occurrences of kmers,\n but allows max m inexact matching (m < k).')
            # 'Subsequence': {'kmer': 3, 'delta': 0},  #   'The subsequence descriptor allows non-contiguous matching.')
-           # 'NAC': {}, # 'The NAC encoding calculates the frequency of each nucleic acid type in a nucleotide sequence.')
-           'ANF': {}, #  'The ANF encoding include the nucleotide frequency information and the distribution of each nucleotide in the RNA sequence.')
-           # 1120
+        #    'NAC': {}, # 'The NAC encoding calculates the frequency of each nucleic acid type in a nucleotide sequence.')
+        #    'ANF': {}, #  'The ANF encoding include the nucleotide frequency information and the distribution of each nucleotide in the RNA sequence.')
+           # 1120 - spatial
            'ENAC': {'sliding_window': 5}, #  'The ENAC descriptor calculates the NAC based on the sequence window\n of fixed length that continuously slides from the 5\' to 3\' terminus\n of each nucleotide sequence and can be usually applied to encode the\n nucleotide sequence with an equal length.')
-           # 1168 MB
+           # 1168 MB - spatial
            'binary': {}, #'In the Binary encoding, each amino acid is represented by a 4-dimensional binary vector.')
            # 4504 MB- 13.3 * 4504
-           'PS2': {}, #  'There are 4 x 4 = 16 pairs of adjacent pairwise nucleotides, \nthus a single variable representing one such pair gets one-hot\n (i.e. binary) encoded into 16 binary variables.')
-           # 'PS3': {}, # 'The PS3 descriptor is encoded for three adjacent nucleotides in a similar way with PS2.')
+            #  'There are 4 x 4 = 16 pairs of adjacent pairwise nucleotides, \n
+            # thus a single variable representing one such pair gets one-hot\n (i.e. binary) encoded into 16 binary variables.')
+           'PS2': {}, # spatial
+            # 'PS3': {}, # 'The PS3 descriptor is encoded for three adjacent nucleotides in a similar way with PS2.')
            # 'PS4': {}, # 'The PS4 descriptor is encoded for four adjacent nucleotides in a similar way with PS2.')
-           'CKSNAP': {'kspace': 3}, # 'The CKSNAP feature encoding calculates the frequency of nucleic acid pairs separated by any k nucleic acid.')
+        #    'CKSNAP': {'kspace': 3}, # 'The CKSNAP feature encoding calculates the frequency of nucleic acid pairs separated by any k nucleic acid.')
            # 880 MB
-           'NCP': {}, # 'Based on chemical properties, A can be represented by coordinates (1, 1, 1), \nC can be represented by coordinates (0, 1, 0), G can be represented by coordinates (1, 0, 0), \nU can be represented by coordinates (0, 0, 1). ')
+        #    'NCP': {}, # 'Based on chemical properties, A can be represented by coordinates (1, 1, 1), \nC can be represented by coordinates (0, 1, 0), G can be represented by coordinates (1, 0, 0), \nU can be represented by coordinates (0, 0, 1). ')
            # 744 (not batchable)
-           'PSTNPss': {}, #  'The PSTNPss descriptor usie a statistical strategy based on single-stranded characteristics of DNA or RNA.')
+        #    'PSTNPss': {}, #  'The PSTNPss descriptor usie a statistical strategy based on single-stranded characteristics of DNA or RNA.')
            # 696 MB (not batchable)
-           'PSTNPds': {}, # , 'The PSTNPds descriptor use a statistical strategy based on double-stranded characteristics of DNA according to complementary base pairing.')
-           'EIIP': {}, # 'The EIIP directly use the EIIP value represent the nucleotide in the DNA sequence.')
-           'PseEIIP': {}, # 'Electron-ion interaction pseudopotentials of trinucleotide.')
+        #    'PSTNPds': {}, # , 'The PSTNPds descriptor use a statistical strategy based on double-stranded characteristics of DNA according to complementary base pairing.')
+        #    'EIIP': {}, # 'The EIIP directly use the EIIP value represent the nucleotide in the DNA sequence.')
+        #    'PseEIIP': {}, # 'Electron-ion interaction pseudopotentials of trinucleotide.')
            # 'ASDC': {}, #  'The adaptive skip dipeptide composition is a modified dinucleotide composition, \nwhich sufficiently considers the correlation information present not only between \nadjacent residues but also between intervening residues.')
            # 1152 MB
-           'DBE': {}, #  'The DBE descriptor encapsulates the positional information of the dinucleotide at each position in the sequence.')
-           'LPDF': {}, # 'The LPDF descriptor calculate the local position-specific dinucleotide frequency.')
+        #    'DBE': {}, #  'The DBE descriptor encapsulates the positional information of the dinucleotide at each position in the sequence.')
+            # spatial
+        #    'LPDF': {}, # 'The LPDF descriptor calculate the local position-specific dinucleotide frequency.')
            # 'DPCP': {'Di-DNA-Phychem': didna_list, 'nlag': 3},# 'The DPCP descriptor calculate the value of frequency of dinucleotide multiplied by dinucleotide physicochemical properties.')
            # 'DPCP_type2': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, # 'The DPCP2 descriptor calculate the position specific dinucleotide physicochemical properties.')
            # 3960 MB - - 
-           'TPCP': {'Tri-DNA-Phychem': tridna_list}, # 'The TPCP descriptor calculate the value of frequency of trinucleotide multiplied by trinucleotide physicochemical properties.')
+        #    'TPCP': {'Tri-DNA-Phychem': tridna_list}, # 'The TPCP descriptor calculate the value of frequency of trinucleotide multiplied by trinucleotide physicochemical properties.')
            # 'TPCP_type2': {'Tri-DNA-Phychem': tridna_list}, # 'The TPCP2 descriptor calculate the position specific trinucleotide physicochemical properties.')
-           'MMI': {}, # 'The MMI descriptor calculate multivariate mutual information on a DNA/RNA sequence.')
+        #    'MMI': {}, # 'The MMI descriptor calculate multivariate mutual information on a DNA/RNA sequence.')
            # Not batchable
-           'KNN': {}, # 'The K-nearest neighbor descriptor depicts how much one query sample resembles other samples.')
+        #    'KNN': {}, # 'The K-nearest neighbor descriptor depicts how much one query sample resembles other samples.')
            # MB - RAM =  -
            'Z_curve_9bit': {}, # 'The Z curve parameters for frequencies of phase-specific mononucleotides.')
            # 'Z_curve_12bit': {}, #  'The Z curve parameters for frequencies of phaseindependent di-nucleotides')
            # 'Z_curve_36bit': {}, # 'The Z curve parameters for frequencies of phase-specific di-nucleotides')
-           # 'Z_curve_48bit': {}, # 'The Z curve parameters for frequencies of phaseindependent tri-nucleotides')
-           # 'Z_curve_144bit': {}, # 'The Z curve parameters for frequencies of phase-specific tri-nucleotides')
+        #    'Z_curve_48bit': {}, # 'The Z curve parameters for frequencies of phaseindependent tri-nucleotides')
+           'Z_curve_144bit': {}, # 'The Z curve parameters for frequencies of phase-specific tri-nucleotides')
            # 2416 MB
-           'NMBroto': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, # 'The autocorrelation descriptors are defined based on the distribution\n of amino acid properties along the sequence.')
+           'NMBroto': {'Di-DNA-Phychem': didna_list_nmboroto, 'nlag': 3}, # 'The autocorrelation descriptors are defined based on the distribution\n of amino acid properties along the sequence.')
            # 'Moran': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, #'The autocorrelation descriptors are defined based on the distribution\n of amino acid properties along the sequence.')
            # 1936 MB
            'Geary': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, #'The autocorrelation descriptors are defined based on the distribution\n of amino acid properties along the sequence.')
            # 'DAC': {'Di-DNA-Phychem': didna_list, 'nlag': 3}, # 'The DAC descriptor measures the correlation of the same physicochemical \nindex between two dinucleotides separated by a distance of lag along the sequence.')
            # 'DCC': {'Di-DNA-Phychem': didna_list_default, 'nlag': 3}, # 'The DCC descriptor measures the correlation of two different physicochemical \nindices between two dinucleotides separated by lag nucleic acids along the sequence.')
-           'DACC': {'Di-DNA-Phychem': didna_list_default, 'nlag': 3}, # 'The DACC encoding is a combination of DAC and DCC encoding.')
+        #    'DACC': {'Di-DNA-Phychem': didna_list_default, 'nlag': 3}, # 'The DACC encoding is a combination of DAC and DCC encoding.')
            # 'TAC': {'Tri-DNA-Phychem': tridna_list, 'nlag': 3}, #  'The TAC descriptor measures the correlation of the same physicochemical \nindex between two trinucleotides separated by a distance of lag along the sequence.')
            # 'TCC': {'Tri-DNA-Phychem': tridna_list, 'nlag': 3}, # 'The TCC descriptor measures the correlation of two different physicochemical \nindices between two trinucleotides separated by lag nucleic acids along the sequence.')
            # 2400 MB
-           'TACC': {'Tri-DNA-Phychem': tridna_list, 'nlag': 3}, # 'The TACC encoding is a combination of TAC and TCC encoding.')
-           'PseDNC': {'Di-DNA-Phychem': didna_list, 'weight': 0.1, 'lambdaValue': 2}, # 'The PseDNC encodings incorporate contiguous local sequence-order information and the global sequence-order information into the feature vector of the nucleotide sequence.')
-           'PseKNC': {'Di-DNA-Phychem': didna_list_pseknc, 'weight': 0.1, 'lambdaValue': 2, 'kmer': 3}, # The PseKNC descriptor incorporate the k-tuple nucleotide composition.')
-           'PCPseDNC': {'Di-DNA-Phychem': didna_list, 'weight': 0.1, 'lambdaValue': 2}, #  'The PCPseDNC descriptor consider parallel correlation pseudo trinucleotide composition information.')
-           'PCPseTNC': {'Tri-DNA-Phychem': tridna_list, 'weight': 0.1, 'lambdaValue': 2}, #  'The PCPseTNC descriptor consider parallel correlation pseudo trinucleotide composition information.')
+        #    'TACC': {'Tri-DNA-Phychem': tridna_list, 'nlag': 3}, # 'The TACC encoding is a combination of TAC and TCC encoding.')
+        #    'PseDNC': {'Di-DNA-Phychem': didna_list, 'weight': 0.1, 'lambdaValue': 2}, # 'The PseDNC encodings incorporate contiguous local sequence-order information and the global sequence-order information into the feature vector of the nucleotide sequence.')
+          'PseKNC': {'Di-DNA-Phychem': didna_list_pseknc, 'weight': 0.1, 'lambdaValue': 2, 'kmer': 5}, # The PseKNC descriptor incorporate the k-tuple nucleotide composition.')
+        #    'PCPseDNC': {'Di-DNA-Phychem': didna_list, 'weight': 0.1, 'lambdaValue': 2}, #  'The PCPseDNC descriptor consider parallel correlation pseudo trinucleotide composition information.')
+        #    'PCPseTNC': {'Tri-DNA-Phychem': tridna_list, 'weight': 0.1, 'lambdaValue': 2}, #  'The PCPseTNC descriptor consider parallel correlation pseudo trinucleotide composition information.')
            # 1936 mb
-           'SCPseDNC': {'Di-DNA-Phychem': didna_list, 'weight': 0.1, 'lambdaValue': 2}, # 'The SCPseDNC descriptor consider series correlation pseudo dinucleotide composition information.')
-           'SCPseTNC': {'Tri-DNA-Phychem': tridna_list, 'weight': 0.1, 'lambdaValue': 2}, #'The SCPseTNC descriptor consider series correlation pseudo trinucleotide composition.')
+        #    'SCPseDNC': {'Di-DNA-Phychem': didna_list, 'weight': 0.1, 'lambdaValue': 2}, # 'The SCPseDNC descriptor consider series correlation pseudo dinucleotide composition information.')
+        #    'SCPseTNC': {'Tri-DNA-Phychem': tridna_list, 'weight': 0.1, 'lambdaValue': 2}, #'The SCPseTNC descriptor consider series correlation pseudo trinucleotide composition.')
     }
 
     
-    from joblib import Parallel, delayed
-    import multiprocessing
     
     def batch_processing(seq, seq_list, feature_enc, save_path, para_dict, i):
         seq.fasta_list = seq_list
-        print (len(seq_list))
+        # print (len(seq_list))
         # print("Error Message: ", seq.error_msg)
         if feature_enc in ['PseDNC', 'PseKNC', 'PCPseDNC', 'PCPseTNC', 'SCPseDNC', 'SCPseTNC']:
             name, value, ok = CheckAccPseParameter.check_Pse_arguments(feature_enc, 'DNA', para_dict[feature_enc])
@@ -7106,13 +7125,13 @@ if __name__ == '__main__':
             getattr(seq, feature_enc)()
             # time.sleep(1)
         # print(feature_enc,"Error Message: ", seq.error_msg)
-        traceback.print_exc()
+        # traceback.print_exc()
 
         # if save path is not exist, make it.
         if not os.path.exists(save_path):
             os.makedirs(save_path)
 
-        seq.save_descriptor(f'{save_path}/{feature_enc}_{i}.csv')
+        seq.save_descriptor(f'{save_path}/{feature_enc}-{i}.csv')
         # print file size in kb
         # file_size = round(os.path.getsize(f'{save_path}/{feature_enc}.csv') / 1024, 2)
         # print("Error Message: ", seq.error_msg)
@@ -7127,8 +7146,9 @@ if __name__ == '__main__':
         if len(fasta_copy) % batch_size != 0:
             indexes.append(len(fasta_copy))
         
+        print(feature_enc)
         # batch processing
-        Parallel(n_jobs=round(num_cores))(delayed(batch_processing)(seq, fasta_copy[indexes[i]:indexes[i + 1]], feature_enc, save_path, para_dict, i) for i in range(len(indexes)-1))
+        ProgressParallel(n_jobs=round(num_cores))(delayed(batch_processing)(seq, fasta_copy[indexes[i]:indexes[i + 1]], feature_enc, save_path, para_dict, i) for i in (range(len(indexes)-1)))
 
     path = sys.argv[1]
     batch_size = int(sys.argv[2])
@@ -7136,9 +7156,6 @@ if __name__ == '__main__':
     save_path = sys.argv[4]
 
     seq = Descriptor(f'{path}', {}, )
-    # sleep 5sec
-    print("sleeeeeeeeeeeeeeeping")
-    time.sleep(3)
 
     # num_cores = multiprocessing.cpu_count()
     print("num cores", num_cores)
@@ -7149,9 +7166,9 @@ if __name__ == '__main__':
         sequenctial_process['PSTNPds'] = para_dict.pop('PSTNPds', None)
         sequenctial_process['KNN'] = para_dict.pop('KNN', None)
     # size_time = Parallel(n_jobs=round(2))(delayed(process)(seq, feature_enc, batch_size, save_path, para_dict) for feature_enc in para_dict)
-    # for feature_enc in para_dict:
-    #     process(seq, feature_enc, batch_size, save_path, para_dict)
-    size_time_seq = Parallel(n_jobs=1)(delayed(process)(seq, feature_enc, batch_size=len(seq.fasta_list), save_path=save_path, para_dict = sequenctial_process) for feature_enc in sequenctial_process)
+    for feature_enc in para_dict:
+        process(seq, feature_enc, batch_size, save_path, para_dict)
+    # size_time_seq = Parallel(n_jobs=1)(delayed(process)(seq, feature_enc, batch_size=len(seq.fasta_list), save_path=save_path, para_dict = sequenctial_process) for feature_enc in sequenctial_process)
 
         # print("Total size:", round(sum(np.array(size_time)[:,0],2)), "kb")
         # print("Total size seq:", round(sum(np.array(size_time_seq)[:,0],2)), "kb")

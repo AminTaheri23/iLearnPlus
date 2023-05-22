@@ -2,3 +2,7 @@ util/new_data_test/*.csv
 util/test_data/*.csv
 util/test_data/feature_data/*.csv
 util/test_data/feature_data/head_files/*.csv
+util/pse5nc/T_PseKNC.csv
+util/df1x_new.fasta
+util/test_data/corr.html
+util/test_data/corr_bigger_8.html
